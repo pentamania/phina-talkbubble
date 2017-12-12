@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=Edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+  <title>phina-talkBubbleサンプル</title>
+  <style type="text/css">
+  </style>
+</head>
+<body>
+
+<script src='https://cdn.rawgit.com/phi-jp/phina.js/v0.2.1/build/phina.js'></script>
+<!-- <script src='../src/canvasTalkBubble.js'></script> -->
+<!-- <script src='../src/talkBubbleShape.js'></script> -->
+<script src='../dist/phina-talkBubble.js'></script>
+
+<script>
+var SCREEN_WIDTH = 600;
+var SCREEN_HEIGHT = 420;
+var RANDOM_LINES = [
+  'ありえない\n何かの間違いではないのか？',
+  '早くやっつけられろー！',
+  'ずっとこの時を待っていた…\n必ず死なすっ！！',
+  'あなたが、コンティニュー出来ないのさ！',
+  '月ニ栄光アレ 地球ニ慈悲アレ',
+  '君ならできるよ',
+  'ヲヤスミ、ケダモノ',
+  'このようにかせぐのだ',
+  'お前たちには任せてはおけぬ\n私自らが出る！！',
+  '2.0.1.5. 宇宙ガ、マルゴト、ヤッテクル',
+  'すもうパワーには まいったな！',
+  'Stand by ready? Good luck ',
+  'I always wanted a thing called tuna sashimi ',
+  'わたしのこと、愛してる？',
+];
+
+phina.globalize();
+
+phina.define('MainScene', {
+  superClass: 'DisplayScene',
+
+  init: function(options) {
+    this.superInit(options);
+    var gx = this.gridX;
+    var gy = phina.util.Grid(options.height, 16);
+
+    this.bubbleLayer = DisplayElement().addChildTo(this);
+
+    // 説明してくれる心優しい円
+    var circ = CircleShape({
+      fill: "#1B6FEE",
+      stroke: false,
+    })
+    .setPosition(gx.span(4), gy.span(14))
+    .addChildTo(this);
+
+    phina.ui.TalkBubbleLabel({
+      text: "タップでも\nフキダシが出るぞ！",
+      tipDirection: 'bottom',
+      bubbleFill: "#EDA9B6",
+    })
+    .setPosition(0, -100)
+    .addChildTo(circ);
+  },
+
+  update: function(app) {
+    var p = app.pointer;
+
+    if (app.frame%42 === 0 || p.getPointingStart()) {
+      var x = Math.randint(SCREEN_WIDTH*0.2, SCREEN_WIDTH*0.8);
+      var y = Math.randint(SCREEN_HEIGHT*0.2, SCREEN_HEIGHT*0.9);
+      var r = Math.randint(0, 1);
+
+      if (r != 0) {
+        // 普通のフキダシ
+        var tb = phina.ui.TalkBubbleLabel({
+          text: RANDOM_LINES.pickup(),
+          tipDirection: 'bottom',
+        });
+      } else {
+        // 棘付きフキダシ
+        var tb = phina.ui.ThornedTalkBubbleLabel({
+          text: RANDOM_LINES.pickup(),
+        });
+      }
+
+      tb.setPosition(x, y)
+      .adjustToLabelSize()
+      .addChildTo(this.bubbleLayer);
+
+      tb.tweener.clear()
+      .set({alpha: 0, scaleX:0.8, scaleY:0.1})
+      .by({y: -100, alpha: 1, scaleX:0.2, scaleY:0.9}, 800, 'easeOutElastic')
+      .wait(2000)
+      .by({y:-40, alpha: -1}, 500, 'easeOutCubic')
+      .call(function() {
+        tb.remove();
+      })
+    }
+  }
+
+});
+
+
+phina.main(function() {
+  var app = GameApp({
+    width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT,
+    startLabel: 'main',
+    backgroundColor: "skyblue",
+  });
+
+  app.run();
+});
+
+</script>
+</body>
+</html>

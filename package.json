@@ -1,0 +1,23 @@
+{
+  "name": "phina-talkbubble",
+  "version": "0.1.0",
+  "description": "talkbubble drawing plugin for phina.js",
+  "main": "config.js",
+  "scripts": {
+    "build": "gulp",
+    "dev": "gulp watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "pentamania",
+  "license": "MIT",
+  "homepage": "https://github.com/pentamania",
+  "devDependencies": {
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-header": "^1.8.9",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^3.0.0",
+    "pump": "^1.0.2"
+  }
+}
