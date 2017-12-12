@@ -1,11 +1,11 @@
-# phina-talkBubble.js
+# phina-talkbubble.js
 
 [![screenshot](./screenshot.gif)](https://pentamania.github.io/phina-fukidashi/sample/crowd.html)
 
 マンガのフキダシ、棘付きのフキダシっぽいものを描画するためのphina.js用プラグインです。  
 phina.js extention to render comic-like talk bubbles.  
 
-**[サンプル](https://pentamania.github.io/phina-fukidashi/sample/crowd.html)**
+**[サンプル](https://pentamania.github.io/phina-talkbubble/sample/crowd.html)**
 
 ## Sample code
 
@@ -21,7 +21,7 @@ phina.js extention to render comic-like talk bubbles.
 <body>
 
 <script src='http://cdn.rawgit.com/phi-jp/phina.js/v0.2.1/build/phina.js'></script>
-<script src='./path/to/phina-talkBubble.js'></script>
+<script src='./path/to/phina-talkbubble.js'></script>
 <script>
 
 phina.globalize();
