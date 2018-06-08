@@ -1,649 +1,144 @@
-/*! 
+/*!
+ * 
  * phina-talkbubble 0.1.0
  * MIT Licensed
  * 
  * Copyright (C) pentamania, https://github.com/pentamania
+ * 
  */
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = "./src/index.js");
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/canvasTalkBubble.js":
+/*!*********************************!*\
+  !*** ./src/canvasTalkBubble.js ***!
+  \*********************************/
+/*! exports provided: phina */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var phina_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! phina.js */ \"phina.js\");\n/* harmony import */ var phina_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(phina_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, \"phina\", function() { return phina_js__WEBPACK_IMPORTED_MODULE_0__; });\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * フキダシ描画\r\n   */\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.talkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {\r\n    var c = this.context;\r\n    var pi = Math.PI;\r\n    var hPi = 0.5 * Math.PI;\r\n\r\n    var l = x;\r\n    var t = y;\r\n    var dx = x + width;\r\n    var dy = y + height;\r\n    var cx = x + width * 0.5;\r\n    var cy = y + height * 0.5;\r\n    var rad = radius;\r\n    var tipPosRatio = tipBasePositionRatio;\r\n    tipDirection = tipDirection || \"right\";\r\n\r\n    var tipCenter = (tipDirection === \"right\" || tipDirection === \"left\")\r\n      ? t + (height * tipPosRatio) // y軸上\r\n      : l + (width * tipPosRatio); // x軸上\r\n    var tSizeHalf = tipBottomSize * 0.5;\r\n    tipProtrusion = tipProtrusion || tipBottomSize;\r\n    var tipX, tipY;\r\n\r\n    switch (tipDirection) {\r\n      case \"right\":\r\n        tipX = dx + tipProtrusion;\r\n        // tipY = tipCenter + tipDeviation;\r\n        tipY = cy + tipDeviation;\r\n\r\n        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上\r\n        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上\r\n        c.lineTo(dx, tipCenter-tSizeHalf);\r\n        c.lineTo(tipX, tipY);\r\n        c.lineTo(dx, tipCenter + tSizeHalf);\r\n        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下\r\n        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下\r\n        break;\r\n\r\n      case \"left\":\r\n        tipX = l - tipProtrusion;\r\n        // tipY = tipCenter + tipDeviation;\r\n        tipY = cy + tipDeviation;\r\n\r\n        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上\r\n        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上\r\n        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下\r\n        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下\r\n        c.lineTo(l, tipCenter+tSizeHalf);\r\n        c.lineTo(tipX, tipY);\r\n        c.lineTo(l, tipCenter-tSizeHalf);\r\n        break;\r\n\r\n      case \"bottom\":\r\n        // tipX = tipCenter + tipDeviation;\r\n        tipX = cx + tipDeviation;\r\n        tipY = dy + tipProtrusion;\r\n\r\n        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上\r\n        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上\r\n        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下\r\n        c.lineTo(tipCenter+tSizeHalf, dy);\r\n        c.lineTo(tipX, tipY);\r\n        c.lineTo(tipCenter-tSizeHalf, dy);\r\n        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下\r\n        break;\r\n\r\n      // case \"top\":\r\n      default:\r\n        // tipX = tipCenter + tipDeviation;\r\n        tipX = cx + tipDeviation;\r\n        tipY = t - tipProtrusion;\r\n\r\n        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上\r\n        c.lineTo(tipCenter-tSizeHalf, t);\r\n        c.lineTo(tipX, tipY);\r\n        c.lineTo(tipCenter+tSizeHalf, t);\r\n        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上\r\n        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下\r\n        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下\r\n        break;\r\n    }\r\n\r\n    c.closePath();\r\n\r\n    return this;\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.fillTalkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {\r\n    return this.beginPath().talkBubble(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize).fill();\r\n  }\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.strokeTalkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {\r\n    return this.beginPath().talkBubble(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize).stroke();\r\n  }\r\n\r\n});\r\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * トゲ付きフキダシ描画\r\n   */\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.thornedTalkBubble = function(x, y, width, height, verticalThornInterval, sideThornInterval, verticalThornSize, sideThornSize) {\r\n    var c = this.context;\r\n\r\n    // 上下面\r\n    var vertThornInterval = verticalThornInterval;\r\n    var vertThornHeight = verticalThornSize || verticalThornInterval　* 0.5;\r\n\r\n    // 側面\r\n    var sideThornWidth = sideThornSize || sideThornInterval * 2;\r\n    var cps = [];\r\n    var cpsRev = [];\r\n\r\n    // 角用の設定\r\n    var cornerGapX = sideThornWidth * 0.6;\r\n    var cornerGapY = vertThornHeight * 1.6;\r\n\r\n    // サイズ調整用\r\n    var sideThornMax = Math.max(sideThornWidth, cornerGapX);\r\n    var vertThornMax = Math.max(vertThornHeight, cornerGapY);\r\n\r\n    var bubbleWidth = width - sideThornMax*2;\r\n    var bubbleHeight = height - vertThornMax*2;\r\n    var thornNum = (bubbleWidth / vertThornInterval) | 0;\r\n    var cpNum = (bubbleHeight / sideThornInterval) | 0;\r\n    var l = x + sideThornMax;\r\n    var r = x + width - sideThornMax;\r\n    var t = y + vertThornMax;\r\n    var b = y + height - vertThornMax;\r\n\r\n    // 制御点\r\n    for (var i = 0; i < cpNum; i++) {\r\n      cps.push({x: r, y: t + sideThornInterval*( i + 0.5) }); // 右側用\r\n      cpsRev.push({x: l, y: b - sideThornInterval*(i + 0.5) });\r\n    }\r\n\r\n    c.beginPath();\r\n\r\n    // 上辺\r\n    c.moveTo(l, t);\r\n    for (var i = 0; i < thornNum; i++) {\r\n      var sx = l + i * vertThornInterval;\r\n      c.lineTo(sx+vertThornInterval*0.25, t);\r\n      c.lineTo(sx+vertThornInterval*0.25*2, t-vertThornHeight);\r\n      c.lineTo(sx+vertThornInterval*0.25*3, t);\r\n      if (i !== thornNum-1) c.lineTo(sx+vertThornInterval, t);\r\n    }\r\n\r\n    // 右辺\r\n    c.quadraticCurveTo(r, t, r+cornerGapX, t-cornerGapY); //上\r\n    for (var i = 0, len=cps.length; i < len; i++) {\r\n      // 二段目以降\r\n      if (i%2 === 0) {\r\n        c.quadraticCurveTo(cps[i].x, cps[i].y, r+sideThornWidth*0.8, t+(i+1)*sideThornInterval);\r\n      } else {\r\n       c.quadraticCurveTo(cps[i].x, cps[i].y, r+sideThornWidth, t+(i+1)*sideThornInterval); // 二段目以降\r\n      }\r\n    }\r\n    c.quadraticCurveTo(r, b, r+cornerGapX, b+cornerGapY); //下\r\n\r\n    // 下辺\r\n    for (i = thornNum-1; 0 <= i; i--) {\r\n      var sx = l + i * vertThornInterval;\r\n      c.lineTo(sx+vertThornInterval*0.25*3, b);\r\n      c.lineTo(sx+vertThornInterval*0.25*2, b+vertThornHeight);\r\n      c.lineTo(sx+vertThornInterval*0.25, b);\r\n    }\r\n\r\n    // 左辺\r\n    c.quadraticCurveTo(l, b, l-cornerGapX, b+cornerGapY); //下\r\n    // 二段目以降\r\n    for (i = 0, len=cpsRev.length; i < len; i++) {\r\n      if (i%2 === 0) {\r\n        c.quadraticCurveTo(cpsRev[i].x, cpsRev[i].y, l-sideThornWidth*0.8, b-(i+1)*sideThornInterval);\r\n      } else {\r\n        c.quadraticCurveTo(cpsRev[i].x, cpsRev[i].y, l-sideThornWidth, b-(i+1)*sideThornInterval);\r\n      }\r\n    }\r\n    c.quadraticCurveTo(l, t, l-cornerGapX, t-cornerGapY); //左上\r\n\r\n    c.closePath();\r\n\r\n    return this;\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.fillThornedTalkBubble = function(params) {\r\n    return this.beginPath().thornedTalkBubble(x, y, width, height).fill();\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"graphics\"].Canvas.prototype.strokeThornedTalkBubble = function(params) {\r\n    return this.beginPath().thornedTalkBubble(x, y, width, height).stroke();\r\n  };\r\n\r\n});\r\n\r\n\n\n//# sourceURL=webpack:///./src/canvasTalkBubble.js?");
+
+/***/ }),
+
+/***/ "./src/index.js":
+/*!**********************!*\
+  !*** ./src/index.js ***!
+  \**********************/
+/*! exports provided: phina */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _talkBubbleShape_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./talkBubbleShape.js */ \"./src/talkBubbleShape.js\");\n/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, \"phina\", function() { return _talkBubbleShape_js__WEBPACK_IMPORTED_MODULE_0__[\"phina\"]; });\n\n\n\n//# sourceURL=webpack:///./src/index.js?");
 
-phina.namespace(function() {
+/***/ }),
 
-  /**
-   * @class phina.display.TalkBubbleShape
-   * フキダシ型のシェイプクラス
-   */
-  phina.define('phina.display.TalkBubbleShape', {
-    superClass: 'phina.display.Shape',
+/***/ "./src/talkBubbleShape.js":
+/*!********************************!*\
+  !*** ./src/talkBubbleShape.js ***!
+  \********************************/
+/*! exports provided: phina */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-    init: function(options) {
-      options = ({}).$safe(options, {
-        width: 180, // フキダシのサイズ： 要素全体のサイズではない
-        height: 150,
-        backgroundColor: 'transparent',
-        fill: 'white',
-        stroke: 'black',
-        strokeWidth: 4,
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var phina_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! phina.js */ \"phina.js\");\n/* harmony import */ var phina_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(phina_js__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony reexport (module object) */ __webpack_require__.d(__webpack_exports__, \"phina\", function() { return phina_js__WEBPACK_IMPORTED_MODULE_0__; });\n/* harmony import */ var _canvasTalkBubble_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./canvasTalkBubble.js */ \"./src/canvasTalkBubble.js\");\n\r\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * @class phina.display.TalkBubbleShape\r\n   * フキダシ型のシェイプクラス\r\n   */\r\n  // export phina.display.TalkBubbleShape = phina.createClass({\r\n    // superClass: phina.display.Shape,\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"define\"]('phina.display.TalkBubbleShape', {\r\n    superClass: 'phina.display.Shape',\r\n\r\n    init: function(options) {\r\n      options = ({}).$safe(options, {\r\n        width: 180, // フキダシのサイズ： 要素全体のサイズではない\r\n        height: 150,\r\n        backgroundColor: 'transparent',\r\n        fill: 'white',\r\n        stroke: 'black',\r\n        strokeWidth: 4,\r\n\r\n        tipDirection: 'right',\r\n        tipBasePositionRatio: 0.5,\r\n        tipBottomSize: 10,\r\n\r\n        // radius: 32,\r\n        cornerRadius: 12,\r\n        tipDeviation: 0,\r\n      });\r\n      this.superInit(options);\r\n\r\n      this.setBoundingType('rect');\r\n      this.cornerRadius = options.cornerRadius;\r\n      this.tipDirection = options.tipDirection;\r\n      this.tipBasePositionRatio = options.tipBasePositionRatio;\r\n      this.tipBottomSize = options.tipBottomSize || Math.min(options.width, options.height) * 0.15;\r\n\r\n      this.tipProtrusion = options.tipProtrusion || this.tipBottomSize;\r\n      this.tipDeviation = options.tipDeviation;\r\n\r\n      this._fullWidth = options.width;\r\n      this._fullHeight = options.height;\r\n      this._resize();\r\n    },\r\n\r\n    // 先端に合わせてcanvasの再計算・リサイズ\r\n    _resize: function() {\r\n      // width or heightが変更された場合、フキダシもリサイズ\r\n      var bw = this.bubbleWidth = (this._cachedWidth !== this.width) ? this.width : this.bubbleWidth;\r\n      var bh = this.bubbleHeight = (this._cachedHeight !== this.height) ? this.height : this.bubbleHeight;\r\n\r\n      var resizedWidth, resizedHeight, delta;\r\n      if (this.tipDirection === 'top' || this.tipDirection === 'bottom') {\r\n         // 上下の場合\r\n        delta = Math.abs(this.tipDeviation) - bw/2;\r\n        resizedWidth = Math.max(bw, bw + delta*2);\r\n        resizedHeight = Math.max(bh, bh + this.tipProtrusion*2)\r\n      } else {\r\n        // 左右の場合\r\n        delta = Math.abs(this.tipDeviation) - bh/2;\r\n        resizedHeight = Math.max(bh, bh + delta*2);\r\n        resizedWidth = Math.max(bw, bw + this.tipProtrusion*2)\r\n      }\r\n\r\n      this.setSize(resizedWidth, resizedHeight); // this.width, heightのセット\r\n      this._cachedWidth = resizedWidth;\r\n      this._cachedHeight = resizedHeight;\r\n\r\n      // 強制的にcanvas再設定\r\n      var canvas = this.canvas;\r\n      var size = this.calcCanvasSize(); // padding + width(height)\r\n      canvas.setSize(size.width, size.height);\r\n      canvas.clearColor(this.backgroundColor);\r\n      canvas.transformCenter();\r\n      // console.log(\"canvas size\", size);\r\n\r\n      // 仮:先端描画領域・パディングを含めた全体サイズ\r\n      this._fullWidth = size.width;\r\n      this._fullHeight = size.height;\r\n    },\r\n\r\n    prerender: function(canvas) {\r\n      this._resize();\r\n      canvas.talkBubble(-this.bubbleWidth/2, -this.bubbleHeight/2, this.bubbleWidth, this.bubbleHeight, this.cornerRadius, this.tipDirection, this.tipBasePositionRatio, this.tipProtrusion, this.tipDeviation, this.tipBottomSize);\r\n    },\r\n\r\n    _defined: function() {\r\n      phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.watchRenderProperties([\r\n        'cornerRadius',\r\n        'tipDirection',\r\n        'tipBasePositionRatio',\r\n        'tipBottomSize',\r\n        'tipProtrusion',\r\n        'tipDeviation',\r\n      ]);\r\n    },\r\n\r\n    _accessor: {\r\n      fullWidth: {\r\n        \"get\": function() { return this._fullWidth; }\r\n      },\r\n      fullHeight: {\r\n        \"get\": function() { return this._fullHeight; }\r\n      },\r\n    }\r\n  });\r\n\r\n});\r\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * @class ThornedTalkBubble\r\n   * 棘付きフキダシシェイプクラス\r\n   */\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"define\"]('phina.display.ThornedTalkBubbleShape', {\r\n    superClass: 'phina.display.Shape',\r\n\r\n    init: function(options) {\r\n      options = ({}).$safe(options, {\r\n        width: 320,\r\n        height: 320,\r\n        backgroundColor: 'transparent',\r\n        fill: 'white',\r\n        stroke: 'black',\r\n        sideThornInterval: 15,\r\n        sideThornSize: 30,\r\n        verticalThornInterval: 20,\r\n        verticalThornSize: 10,\r\n        strokeWidth: 4,\r\n        lineJoin: 'miter',\r\n        miterLimit: 100.0,\r\n      });\r\n      this.superInit(options);\r\n\r\n      this.setBoundingType('rect');\r\n      this.sideThornInterval = options.sideThornInterval;\r\n      this.sideThornSize = options.sideThornSize || options.sideThornInterval * 2;\r\n      this.verticalThornInterval = options.verticalThornInterval;\r\n      this.verticalThornSize = options.verticalThornSize || options.verticalThornInterval * 0.5;\r\n      this.lineJoin = options.lineJoin;\r\n      this.miterLimit = options.miterLimit;\r\n    },\r\n\r\n    // lineJoinを設定するため、renderを直接書き換え\r\n    render: function(canvas) {\r\n      var context = canvas.context;\r\n      // リサイズ\r\n      var size = this.calcCanvasSize();\r\n      canvas.setSize(size.width, size.height);\r\n      // クリアカラー\r\n      canvas.clearColor(this.backgroundColor);\r\n      // 中心に座標を移動\r\n      canvas.transformCenter();\r\n\r\n      // 吹き出し内サイズをキャッシュ\r\n      this.bubbleWidth = this.width - this.sideThornSize*2;\r\n      this.bubbleHeight = this.height - this.verticalThornSize*2;\r\n\r\n      canvas.thornedTalkBubble(-this.width/2, -this.height/2, this.width, this.height, this.verticalThornInterval, this.sideThornInterval, this.verticalThornSize, this.sideThornSize);\r\n\r\n      // ストローク描画\r\n      if (this.isStrokable()) {\r\n        context.strokeStyle = this.stroke;\r\n        context.lineWidth = this.strokeWidth;\r\n        context.lineJoin = this.lineJoin;\r\n        context.miterLimit = this.miterLimit;\r\n        context.shadowBlur = 0;\r\n        this.renderStroke(canvas);\r\n      }\r\n\r\n      // 塗りつぶし描画\r\n      if (this.fill) {\r\n        context.fillStyle = this.fill;\r\n\r\n        // shadow の on/off\r\n        if (this.shadow) {\r\n          context.shadowColor = this.shadow;\r\n          context.shadowBlur = this.shadowBlur;\r\n        }\r\n        else {\r\n          context.shadowBlur = 0;\r\n        }\r\n\r\n        this.renderFill(canvas);\r\n      }\r\n\r\n      return this;\r\n    },\r\n\r\n    _defined: function() {\r\n      phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.watchRenderProperties([\r\n        'verticalThornInterval',\r\n        'verticalThornSize',\r\n        'sideThornSize',\r\n        'sideThornInterval',\r\n        'lineJoin',\r\n        'miterLimit',\r\n      ]);\r\n    },\r\n\r\n  });\r\n\r\n});\r\n\r\n\r\n/**\r\n * ui.TalkBubbleLabel用のShape拡張\r\n * prototype拡張ではなくstaticな専用シングルトンクラスを用意する？\r\n *\r\n */\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype._getLines = function() {\r\n    return (this.label) ? (this.label.text + '').split('\\n') : [];\r\n  },\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype._getLabelWidth = function() {\r\n    var lines = (this._lines) ? this._lines : this._getLines();\r\n\r\n    var width = 0;\r\n    var canvas = this.canvas;\r\n    canvas.context.font = this.label.font;\r\n    lines.each(function(line, i) {\r\n      var w = canvas.context.measureText(line).width;\r\n      width = Math.max(width, w);\r\n    });\r\n\r\n    return width;\r\n  },\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype._getLabelHeight = function() {\r\n    var lines = (this._lines) ? this._lines : this._getLines();\r\n\r\n    var height = this.label.fontSize * lines.length;\r\n    // if (this.baseline !== 'middle') height*=2;\r\n    height *= this.label.lineHeight;\r\n\r\n    return height;\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype.adjustToLabelWidth = function() {\r\n    this.width = this._getLabelWidth() + this.padding*2;\r\n    return this;\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype.adjustToLabelHeight = function() {\r\n    this.height = this._getLabelHeight() + this.padding*2;\r\n    return this;\r\n  };\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"display\"].Shape.prototype.adjustToLabelSize = function() {\r\n    this.adjustToLabelWidth().adjustToLabelHeight();\r\n    return this;\r\n  };\r\n\r\n});\r\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * @class phina.ui.TalkBubbleLabel(Area)\r\n   * セリフ入りフキダシを描画するクラス\r\n   */\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"define\"]('phina.ui.TalkBubbleLabel', {\r\n    superClass: 'phina.display.TalkBubbleShape',\r\n\r\n    init: function(options) {\r\n      options = ({}).$safe(options, {\r\n        text: \"Hello World!\",\r\n        bubbleFill: (options.fill || 'white'),\r\n        bubbleStroke: (options.stroke || 'black'),\r\n        textFill: 'black',\r\n        textStroke: 'transparent',\r\n        fontSize: 24,\r\n        textPadding: 6,\r\n        fit: true,\r\n      });\r\n\r\n      var labelOptions = ({}).$extend(options, {\r\n        backgroundColor: 'transparent',\r\n        padding: 0,\r\n        fill: options.textFill,\r\n        stroke: options.textStroke,\r\n      });\r\n      var la = this.label = phina_js__WEBPACK_IMPORTED_MODULE_0__[\"ui\"].LabelArea(labelOptions);\r\n\r\n      // フキダシ用オプション\r\n      var bubbleOptions = ({}).$extend(options, {\r\n        width: la.width,\r\n        height: la.height,\r\n        fill: options.bubbleFill,\r\n        stroke: options.bubbleStroke\r\n      });\r\n      this.superInit(bubbleOptions);\r\n\r\n      this.addChild(la);\r\n      this.text = options.text;\r\n      this.textPadding = options.textPadding;\r\n\r\n      if (options.fit) this.adjustToLabelSize();\r\n\r\n      // ラベル位置・サイズをフキダシと同期させる（もっと良い方法あるかも？）\r\n      var dirtySync = this._dirtySync = true; // 初回実行用\r\n      this.on('enterframe', function() {\r\n        if (dirtySync) {\r\n          var size = this.calcCanvasSize();\r\n          la.setPosition(size.width*(0.5 - this.originX), size.height*(0.5 - this.originY));\r\n          la.setSize(this.bubbleWidth - this.textPadding*2, this.bubbleHeight - this.textPadding*2);\r\n          dirtySync = false;\r\n          // console.log('synced')\r\n        }\r\n      });\r\n\r\n      // 値の監視\r\n      // origin, bubbleWidth（width）, textPaddingが変更されたら位置同期フラグ立てる\r\n      var callback = function(newVal, oldVal) {\r\n        if (newVal !== oldVal) dirtySync = true;\r\n      };\r\n      [\r\n        'bubbleWidth',\r\n        'bubbleHeight',\r\n        'textPadding',\r\n      ].forEach(function(key) {\r\n        this.$watch(key, callback);\r\n      }, this);\r\n\r\n      // origin.x, yの監視\r\n      ['x', 'y'].forEach(function(key) {\r\n        this.origin.$watch(key, callback.bind(this));\r\n      }, this);\r\n    },\r\n\r\n    _accessor: {\r\n      text: {\r\n        get: function() {\r\n          return this.label.text;\r\n        },\r\n        set: function(v) {\r\n          this.label.text = v;\r\n          this._lines = (this.label.text + '').split('\\n');\r\n        }\r\n      },\r\n    },\r\n\r\n  });\r\n\r\n});\r\n\r\n\r\nphina_js__WEBPACK_IMPORTED_MODULE_0__[\"namespace\"](function() {\r\n\r\n  /**\r\n   * @class ThornedTalkBubbleLabel\r\n   * 棘付きフキダシのラベルクラス\r\n   */\r\n  phina_js__WEBPACK_IMPORTED_MODULE_0__[\"define\"]('phina.ui.ThornedTalkBubbleLabel', {\r\n    superClass: 'phina.display.ThornedTalkBubbleShape',\r\n\r\n    init: function(options) {\r\n      options = ({}).$safe(options, {\r\n        text: \"Hello World!\",\r\n        width: 230,\r\n        height: 180,\r\n        bubbleFill: (options.fill || 'white'),\r\n        bubbleStroke: (options.stroke || 'black'),\r\n        textFill: 'black',\r\n        textStroke: 'transparent',\r\n        fontSize: 24,\r\n        textPadding: 16,\r\n        fit: true,\r\n      });\r\n\r\n      var bubbleOptions = ({}).$extend(options, {\r\n        fill: options.bubbleFill,\r\n        stroke: options.bubbleStroke\r\n      });\r\n      this.superInit(bubbleOptions);\r\n\r\n      var labelOptions = ({}).$extend(options, {\r\n        backgroundColor: 'transparent',\r\n        padding: 0,\r\n        fill: options.textFill,\r\n        stroke: options.textStroke,\r\n      });\r\n      var la = this.label = phina_js__WEBPACK_IMPORTED_MODULE_0__[\"ui\"].LabelArea(labelOptions).addChildTo(this);\r\n      this.textPadding = options.textPadding;\r\n\r\n      if (options.fit) this.adjustToLabelSize();\r\n\r\n      // ラベル位置・サイズをフキダシと同期させる\r\n      var _dirtySync = true; //初回実行用\r\n      this.on('enterframe', function() {\r\n        if (_dirtySync) {\r\n          // console.log('sycd',_dirtySync)\r\n          var size = this.calcCanvasSize();\r\n          var tp2 = this.textPadding * 2;\r\n          // var bubbleWidth = this.width - this.sideThornSize*2;\r\n          // var bubbleHeight = this.height - this.verticalThornSize*2;\r\n          la.setPosition(size.width*(0.5 - this.originX), size.height*(0.5 - this.originY));\r\n          la.setSize(this.bubbleWidth - tp2, this.bubbleHeight - tp2);\r\n          _dirtySync = false;\r\n        }\r\n      });\r\n\r\n      // 値の監視:変更されたら位置同期フラグ立てる\r\n      var callback = function(newVal, oldVal) {\r\n        if (newVal !== oldVal) _dirtySync = true;\r\n      };\r\n      [\r\n        'bubbleWidth',\r\n        'bubbleHeight',\r\n        'textPadding',\r\n      ].forEach(function(key) {\r\n        this.$watch(key, callback);\r\n      }, this);\r\n\r\n      // origin.x, yの監視\r\n      ['x', 'y'].forEach(function(key) {\r\n        this.origin.$watch(key, callback.bind(this));\r\n      }, this);\r\n\r\n    },\r\n\r\n    adjustToLabelWidth: function() {\r\n      // this.width = width + this.padding*2;\r\n      this.width = this._getLabelWidth() + this.textPadding*2 + this.sideThornSize*2;\r\n      return this;\r\n    },\r\n\r\n    adjustToLabelHeight: function() {\r\n      // this.height = height*this.label.lineHeight + this.padding*2;\r\n      this.height = this._getLabelHeight() + this.textPadding*2 + this.verticalThornSize*2;\r\n      return this;\r\n    },\r\n\r\n    _accessor: {\r\n      text: {\r\n        get: function() {\r\n          return this.label.text;\r\n        },\r\n        set: function(v) {\r\n          this.label.text = v;\r\n        }\r\n      },\r\n    },\r\n\r\n  });\r\n\r\n});\r\n\r\n\n\n//# sourceURL=webpack:///./src/talkBubbleShape.js?");
 
-        tipDirection: 'right',
-        tipBasePositionRatio: 0.5,
-        tipBottomSize: 10,
+/***/ }),
 
-        // radius: 32,
-        cornerRadius: 12,
-        tipDeviation: 0,
-      });
-      this.superInit(options);
+/***/ "phina.js":
+/*!************************!*\
+  !*** external "phina" ***!
+  \************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
 
-      this.setBoundingType('rect');
-      this.cornerRadius = options.cornerRadius;
-      this.tipDirection = options.tipDirection;
-      this.tipBasePositionRatio = options.tipBasePositionRatio;
-      this.tipBottomSize = options.tipBottomSize || Math.min(options.width, options.height) * 0.15;
+eval("module.exports = phina;\n\n//# sourceURL=webpack:///external_%22phina%22?");
 
-      this.tipProtrusion = options.tipProtrusion || this.tipBottomSize;
-      this.tipDeviation = options.tipDeviation;
+/***/ })
 
-      this._fullWidth = options.width;
-      this._fullHeight = options.height;
-      this._resize();
-    },
-
-    // 先端に合わせてcanvasの再計算・リサイズ
-    _resize: function() {
-      // width or heightが変更された場合、フキダシもリサイズ
-      var bw = this.bubbleWidth = (this._cachedWidth !== this.width) ? this.width : this.bubbleWidth;
-      var bh = this.bubbleHeight = (this._cachedHeight !== this.height) ? this.height : this.bubbleHeight;
-
-      var resizedWidth, resizedheight, delta;
-      if (this.tipDirection === 'top' || this.tipDirection === 'bottom') {
-         // 上下の場合
-        delta = Math.abs(this.tipDeviation) - bw/2;
-        resizedWidth = Math.max(bw, bw + delta*2);
-        resizedHeight = Math.max(bh, bh + this.tipProtrusion*2)
-      } else {
-        // 左右の場合
-        delta = Math.abs(this.tipDeviation) - bh/2;
-        resizedHeight = Math.max(bh, bh + delta*2);
-        resizedWidth = Math.max(bw, bw + this.tipProtrusion*2)
-      }
-
-      this.setSize(resizedWidth, resizedHeight); // this.width, heightのセット
-      this._cachedWidth = resizedWidth;
-      this._cachedHeight = resizedHeight;
-
-      // 強制的にcanvas再設定
-      var canvas = this.canvas;
-      var size = this.calcCanvasSize(); // padding + width(height)
-      canvas.setSize(size.width, size.height);
-      canvas.clearColor(this.backgroundColor);
-      canvas.transformCenter();
-      // console.log("canvas size", size);
-
-      // 仮:先端描画領域・パディングを含めた全体サイズ
-      this._fullWidth = size.width;
-      this._fullHeight = size.height;
-    },
-
-    prerender: function(canvas) {
-      this._resize();
-      canvas.talkBubble(-this.bubbleWidth/2, -this.bubbleHeight/2, this.bubbleWidth, this.bubbleHeight, this.cornerRadius, this.tipDirection, this.tipBasePositionRatio, this.tipProtrusion, this.tipDeviation, this.tipBottomSize);
-    },
-
-    _defined: function() {
-      phina.display.Shape.watchRenderProperties([
-        'cornerRadius',
-        'tipDirection',
-        'tipBasePositionRatio',
-        'tipBottomSize',
-        'tipProtrusion',
-        'tipDeviation',
-      ]);
-    },
-
-    _accessor: {
-      fullWidth: {
-        "get": function() { return this._fullWidth; }
-      },
-      fullHeight: {
-        "get": function() { return this._fullHeight; }
-      },
-    }
-  });
-
-});
-
-
-phina.namespace(function() {
-
-  /**
-   * @class ThornedTalkBubble
-   * 棘付きフキダシシェイプクラス
-   */
-  phina.define('phina.display.ThornedTalkBubbleShape', {
-    superClass: 'phina.display.Shape',
-
-    init: function(options) {
-      options = ({}).$safe(options, {
-        width: 320,
-        height: 320,
-        backgroundColor: 'transparent',
-        fill: 'white',
-        stroke: 'black',
-        sideThornInterval: 15,
-        sideThornSize: 30,
-        verticalThornInterval: 20,
-        verticalThornSize: 10,
-        strokeWidth: 4,
-        lineJoin: 'miter',
-        miterLimit: 100.0,
-      });
-      this.superInit(options);
-
-      this.setBoundingType('rect');
-      this.sideThornInterval = options.sideThornInterval;
-      this.sideThornSize = options.sideThornSize || options.sideThornInterval * 2;
-      this.verticalThornInterval = options.verticalThornInterval;
-      this.verticalThornSize = options.verticalThornSize || options.verticalThornInterval * 0.5;
-      this.lineJoin = options.lineJoin;
-      this.miterLimit = options.miterLimit;
-    },
-
-    // lineJoinを設定するため、renderを直接書き換え
-    render: function(canvas) {
-      var context = canvas.context;
-      // リサイズ
-      var size = this.calcCanvasSize();
-      canvas.setSize(size.width, size.height);
-      // クリアカラー
-      canvas.clearColor(this.backgroundColor);
-      // 中心に座標を移動
-      canvas.transformCenter();
-
-      // 吹き出し内サイズをキャッシュ
-      this.bubbleWidth = this.width - this.sideThornSize*2;
-      this.bubbleHeight = this.height - this.verticalThornSize*2;
-
-      canvas.thornedTalkBubble(-this.width/2, -this.height/2, this.width, this.height, this.verticalThornInterval, this.sideThornInterval, this.verticalThornSize, this.sideThornSize);
-
-      // ストローク描画
-      if (this.isStrokable()) {
-        context.strokeStyle = this.stroke;
-        context.lineWidth = this.strokeWidth;
-        context.lineJoin = this.lineJoin;
-        context.miterLimit = this.miterLimit;
-        context.shadowBlur = 0;
-        this.renderStroke(canvas);
-      }
-
-      // 塗りつぶし描画
-      if (this.fill) {
-        context.fillStyle = this.fill;
-
-        // shadow の on/off
-        if (this.shadow) {
-          context.shadowColor = this.shadow;
-          context.shadowBlur = this.shadowBlur;
-        }
-        else {
-          context.shadowBlur = 0;
-        }
-
-        this.renderFill(canvas);
-      }
-
-      return this;
-    },
-
-    _defined: function() {
-      phina.display.Shape.watchRenderProperties([
-        'verticalThornInterval',
-        'verticalThornSize',
-        'sideThornSize',
-        'sideThornInterval',
-        'lineJoin',
-        'miterLimit',
-      ]);
-    },
-
-  });
-
-});
-
-
-/**
- * ui.TalkBubbleLabel用のShape拡張
- * prototype拡張ではなくstaticな専用シングルトンクラスを用意する？
- *
- */
-phina.namespace(function() {
-
-  phina.display.Shape.prototype._getLines = function() {
-    return (this.label) ? (this.label.text + '').split('\n') : [];
-  },
-  phina.display.Shape.prototype._getLabelWidth = function() {
-    var lines = (this._lines) ? this._lines : this._getLines();
-
-    var width = 0;
-    var canvas = this.canvas;
-    canvas.context.font = this.label.font;
-    lines.each(function(line, i) {
-      var w = canvas.context.measureText(line).width;
-      width = Math.max(width, w);
-    });
-
-    return width;
-  },
-  phina.display.Shape.prototype._getLabelHeight = function() {
-    var lines = (this._lines) ? this._lines : this._getLines();
-
-    var height = this.label.fontSize * lines.length;
-    // if (this.baseline !== 'middle') height*=2;
-    height *= this.label.lineHeight;
-
-    return height;
-  };
-  phina.display.Shape.prototype.adjustToLabelWidth = function() {
-    this.width = this._getLabelWidth() + this.padding*2;
-    return this;
-  };
-  phina.display.Shape.prototype.adjustToLabelHeight = function() {
-    this.height = this._getLabelHeight() + this.padding*2;
-    return this;
-  };
-  phina.display.Shape.prototype.adjustToLabelSize = function() {
-    this.adjustToLabelWidth().adjustToLabelHeight();
-    return this;
-  };
-
-});
-
-
-phina.namespace(function() {
-
-  /**
-   * @class phina.ui.TalkBubbleLabel(Area)
-   * セリフ入りフキダシを描画するクラス
-   */
-  phina.define('phina.ui.TalkBubbleLabel', {
-    superClass: 'phina.display.TalkBubbleShape',
-
-    init: function(options) {
-      options = ({}).$safe(options, {
-        text: "Hello World!",
-        bubbleFill: (options.fill || 'white'),
-        bubbleStroke: (options.stroke || 'black'),
-        textFill: 'black',
-        textStroke: 'transparent',
-        fontSize: 24,
-        textPadding: 6,
-        fit: true,
-      });
-
-      var labelOptions = ({}).$extend(options, {
-        backgroundColor: 'transparent',
-        padding: 0,
-        fill: options.textFill,
-        stroke: options.textStroke,
-      });
-      var la = this.label = phina.ui.LabelArea(labelOptions);
-
-      // フキダシ用オプション
-      var bubbleOptions = ({}).$extend(options, {
-        width: la.width,
-        height: la.height,
-        fill: options.bubbleFill,
-        stroke: options.bubbleStroke
-      });
-      this.superInit(bubbleOptions);
-
-      this.addChild(la);
-      this.text = options.text;
-      this.textPadding = options.textPadding;
-
-      if (options.fit) this.adjustToLabelSize();
-
-      // ラベル位置・サイズをフキダシと同期させる（もっと良い方法あるかも？）
-      var dirtySync = this._dirtySync = true; // 初回実行用
-      this.on('enterframe', function() {
-        if (dirtySync) {
-          var size = this.calcCanvasSize();
-          la.setPosition(size.width*(0.5 - this.originX), size.height*(0.5 - this.originY));
-          la.setSize(this.bubbleWidth - this.textPadding*2, this.bubbleHeight - this.textPadding*2);
-          dirtySync = false;
-          // console.log('synced')
-        }
-      });
-
-      // 値の監視
-      // origin, bubbleWidth（width）, textPaddingが変更されたら位置同期フラグ立てる
-      var callback = function(newVal, oldVal) {
-        if (newVal !== oldVal) dirtySync = true;
-      };
-      [
-        'bubbleWidth',
-        'bubbleHeight',
-        'textPadding',
-      ].forEach(function(key) {
-        this.$watch(key, callback);
-      }, this);
-
-      // origin.x, yの監視
-      ['x', 'y'].forEach(function(key) {
-        this.origin.$watch(key, callback.bind(this));
-      }, this);
-    },
-
-    _accessor: {
-      text: {
-        get: function() {
-          return this.label.text;
-        },
-        set: function(v) {
-          this.label.text = v;
-          this._lines = (this.label.text + '').split('\n');
-        }
-      },
-    },
-
-  });
-
-});
-
-
-phina.namespace(function() {
-
-  /**
-   * @class ThornedTalkBubbleLabel
-   * 棘付きフキダシのラベルクラス
-   */
-  phina.define('phina.ui.ThornedTalkBubbleLabel', {
-    superClass: 'phina.display.ThornedTalkBubbleShape',
-
-    init: function(options) {
-      options = ({}).$safe(options, {
-        text: "Hello World!",
-        width: 230,
-        height: 180,
-        bubbleFill: (options.fill || 'white'),
-        bubbleStroke: (options.stroke || 'black'),
-        textFill: 'black',
-        textStroke: 'transparent',
-        fontSize: 24,
-        textPadding: 16,
-        fit: true,
-      });
-
-      var bubbleOptions = ({}).$extend(options, {
-        fill: options.bubbleFill,
-        stroke: options.bubbleStroke
-      });
-      this.superInit(bubbleOptions);
-
-      var labelOptions = ({}).$extend(options, {
-        backgroundColor: 'transparent',
-        padding: 0,
-        fill: options.textFill,
-        stroke: options.textStroke,
-      });
-      var la = this.label = phina.ui.LabelArea(labelOptions).addChildTo(this);
-      this.textPadding = options.textPadding;
-
-      if (options.fit) this.adjustToLabelSize();
-
-      // ラベル位置・サイズをフキダシと同期させる
-      var _dirtySync = true; //初回実行用
-      this.on('enterframe', function() {
-        if (_dirtySync) {
-          // console.log('sycd',_dirtySync)
-          var size = this.calcCanvasSize();
-          var tp2 = this.textPadding * 2;
-          // var bubbleWidth = this.width - this.sideThornSize*2;
-          // var bubbleHeight = this.height - this.verticalThornSize*2;
-          la.setPosition(size.width*(0.5 - this.originX), size.height*(0.5 - this.originY));
-          la.setSize(this.bubbleWidth - tp2, this.bubbleHeight - tp2);
-          _dirtySync = false;
-        }
-      });
-
-      // 値の監視:変更されたら位置同期フラグ立てる
-      var callback = function(newVal, oldVal) {
-        if (newVal !== oldVal) _dirtySync = true;
-      };
-      [
-        'bubbleWidth',
-        'bubbleHeight',
-        'textPadding',
-      ].forEach(function(key) {
-        this.$watch(key, callback);
-      }, this);
-
-      // origin.x, yの監視
-      ['x', 'y'].forEach(function(key) {
-        this.origin.$watch(key, callback.bind(this));
-      }, this);
-
-    },
-
-    adjustToLabelWidth: function() {
-      // this.width = width + this.padding*2;
-      this.width = this._getLabelWidth() + this.textPadding*2 + this.sideThornSize*2;
-      return this;
-    },
-
-    adjustToLabelHeight: function() {
-      // this.height = height*this.label.lineHeight + this.padding*2;
-      this.height = this._getLabelHeight() + this.textPadding*2 + this.verticalThornSize*2;
-      return this;
-    },
-
-    _accessor: {
-      text: {
-        get: function() {
-          return this.label.text;
-        },
-        set: function(v) {
-          this.label.text = v;
-        }
-      },
-    },
-
-  });
-
-});
-
-phina.namespace(function() {
-
-  /**
-   * フキダシ描画
-   */
-  phina.graphics.Canvas.prototype.talkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {
-    var c = this.context;
-    var pi = Math.PI;
-    var hPi = 0.5 * Math.PI;
-
-    var l = x;
-    var t = y;
-    var dx = x + width;
-    var dy = y + height;
-    var cx = x + width * 0.5;
-    var cy = y + height * 0.5;
-    var rad = radius;
-    var tipPosRatio = tipBasePositionRatio;
-    tipDirection = tipDirection || "right";
-
-    var tipCenter = (tipDirection === "right" || tipDirection === "left")
-      ? t + (height * tipPosRatio) // y軸上
-      : l + (width * tipPosRatio); // x軸上
-    var tSizeHalf = tipBottomSize * 0.5;
-    tipProtrusion = tipProtrusion || tipBottomSize;
-    var tipX, tipY;
-
-    switch (tipDirection) {
-      case "right":
-        tipX = dx + tipProtrusion;
-        // tipY = tipCenter + tipDeviation;
-        tipY = cy + tipDeviation;
-
-        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上
-        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上
-        c.lineTo(dx, tipCenter-tSizeHalf);
-        c.lineTo(tipX, tipY);
-        c.lineTo(dx, tipCenter + tSizeHalf);
-        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下
-        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下
-        break;
-
-      case "left":
-        tipX = l - tipProtrusion;
-        // tipY = tipCenter + tipDeviation;
-        tipY = cy + tipDeviation;
-
-        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上
-        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上
-        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下
-        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下
-        c.lineTo(l, tipCenter+tSizeHalf);
-        c.lineTo(tipX, tipY);
-        c.lineTo(l, tipCenter-tSizeHalf);
-        break;
-
-      case "bottom":
-        // tipX = tipCenter + tipDeviation;
-        tipX = cx + tipDeviation;
-        tipY = dy + tipProtrusion;
-
-        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上
-        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上
-        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下
-        c.lineTo(tipCenter+tSizeHalf, dy);
-        c.lineTo(tipX, tipY);
-        c.lineTo(tipCenter-tSizeHalf, dy);
-        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下
-        break;
-
-      // case "top":
-      default:
-        // tipX = tipCenter + tipDeviation;
-        tipX = cx + tipDeviation;
-        tipY = t - tipProtrusion;
-
-        c.arc(l+rad, t+rad, rad, -pi, -hPi, false); // 左上
-        c.lineTo(tipCenter-tSizeHalf, t);
-        c.lineTo(tipX, tipY);
-        c.lineTo(tipCenter+tSizeHalf, t);
-        c.arc(dx-rad, t+rad, rad, -hPi, 0, false); // 右上
-        c.arc(dx-rad, dy-rad, rad, 0, hPi, false); // 右下
-        c.arc(l+rad, dy-rad, rad, hPi, pi, false); // 左下
-        break;
-    }
-
-    c.closePath();
-
-    return this;
-  };
-  phina.graphics.Canvas.prototype.fillTalkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {
-    return this.beginPath().talkBubble(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize).fill();
-  }
-  phina.graphics.Canvas.prototype.strokeTalkBubble = function(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize) {
-    return this.beginPath().talkBubble(x, y, width, height, radius, tipDirection, tipBasePositionRatio, tipProtrusion, tipDeviation, tipBottomSize).stroke();
-  }
-
-});
-
-
-phina.namespace(function() {
-
-  /**
-   * トゲ付きフキダシ描画
-   */
-  phina.graphics.Canvas.prototype.thornedTalkBubble = function(x, y, width, height, verticalThornInterval, sideThornInterval, verticalThornSize, sideThornSize) {
-    var c = this.context;
-
-    // 上下面
-    var vertThornInterval = verticalThornInterval;
-    var vertThornHeight = verticalThornSize || verticalThornInterval　* 0.5;
-
-    // 側面
-    var sideThornWidth = sideThornSize || sideThornInterval * 2;
-    var cps = [];
-    var cpsRev = [];
-
-    // 角用の設定
-    var cornerGapX = sideThornWidth * 0.6;
-    var cornerGapY = vertThornHeight * 1.6;
-
-    // サイズ調整用
-    var sideThornMax = Math.max(sideThornWidth, cornerGapX);
-    var vertThornMax = Math.max(vertThornHeight, cornerGapY);
-
-    var bubbleWidth = width - sideThornMax*2;
-    var bubbleHeight = height - vertThornMax*2;
-    var thornNum = (bubbleWidth / vertThornInterval) | 0;
-    var cpNum = (bubbleHeight / sideThornInterval) | 0;
-    var l = x + sideThornMax;
-    var r = x + width - sideThornMax;
-    var t = y + vertThornMax;
-    var b = y + height - vertThornMax;
-
-    // 制御点
-    for (var i = 0; i < cpNum; i++) {
-      cps.push({x: r, y: t + sideThornInterval*( i + 0.5) }); // 右側用
-      cpsRev.push({x: l, y: b - sideThornInterval*(i + 0.5) });
-    }
-
-    c.beginPath();
-
-    // 上辺
-    c.moveTo(l, t);
-    for (var i = 0; i < thornNum; i++) {
-      var sx = l + i * vertThornInterval;
-      c.lineTo(sx+vertThornInterval*0.25, t);
-      c.lineTo(sx+vertThornInterval*0.25*2, t-vertThornHeight);
-      c.lineTo(sx+vertThornInterval*0.25*3, t);
-      if (i !== thornNum-1) c.lineTo(sx+vertThornInterval, t);
-    }
-
-    // 右辺
-    c.quadraticCurveTo(r, t, r+cornerGapX, t-cornerGapY); //上
-    for (var i = 0, len=cps.length; i < len; i++) {
-      // 二段目以降
-      if (i%2 === 0) {
-        c.quadraticCurveTo(cps[i].x, cps[i].y, r+sideThornWidth*0.8, t+(i+1)*sideThornInterval);
-      } else {
-       c.quadraticCurveTo(cps[i].x, cps[i].y, r+sideThornWidth, t+(i+1)*sideThornInterval); // 二段目以降
-      }
-    }
-    c.quadraticCurveTo(r, b, r+cornerGapX, b+cornerGapY); //下
-
-    // 下辺
-    for (i = thornNum-1; 0 <= i; i--) {
-      var sx = l + i * vertThornInterval;
-      c.lineTo(sx+vertThornInterval*0.25*3, b);
-      c.lineTo(sx+vertThornInterval*0.25*2, b+vertThornHeight);
-      c.lineTo(sx+vertThornInterval*0.25, b);
-    }
-
-    // 左辺
-    c.quadraticCurveTo(l, b, l-cornerGapX, b+cornerGapY); //下
-    // 二段目以降
-    for (i = 0, len=cpsRev.length; i < len; i++) {
-      if (i%2 === 0) {
-        c.quadraticCurveTo(cpsRev[i].x, cpsRev[i].y, l-sideThornWidth*0.8, b-(i+1)*sideThornInterval);
-      } else {
-        c.quadraticCurveTo(cpsRev[i].x, cpsRev[i].y, l-sideThornWidth, b-(i+1)*sideThornInterval);
-      }
-    }
-    c.quadraticCurveTo(l, t, l-cornerGapX, t-cornerGapY); //左上
-
-    c.closePath();
-
-    return this;
-  };
-  phina.graphics.Canvas.prototype.fillThornedTalkBubble = function(params) {
-    return this.beginPath().thornedTalkBubble(x, y, width, height).fill();
-  };
-  phina.graphics.Canvas.prototype.strokeThornedTalkBubble = function(params) {
-    return this.beginPath().thornedTalkBubble(x, y, width, height).stroke();
-  };
-
-});
+/******/ });
