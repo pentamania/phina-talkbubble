@@ -51,7 +51,7 @@ phina.namespace(function() {
       var bw = this.bubbleWidth = (this._cachedWidth !== this.width) ? this.width : this.bubbleWidth;
       var bh = this.bubbleHeight = (this._cachedHeight !== this.height) ? this.height : this.bubbleHeight;
 
-      var resizedWidth, resizedheight, delta;
+      var resizedWidth, resizedHeight, delta;
       if (this.tipDirection === 'top' || this.tipDirection === 'bottom') {
          // 上下の場合
         delta = Math.abs(this.tipDeviation) - bw/2;
