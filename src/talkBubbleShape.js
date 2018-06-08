@@ -1,3 +1,5 @@
+import * as phina from 'phina.js';
+import './canvasTalkBubble.js';
 
 phina.namespace(function() {
 
@@ -5,6 +7,8 @@ phina.namespace(function() {
    * @class phina.display.TalkBubbleShape
    * フキダシ型のシェイプクラス
    */
+  // export phina.display.TalkBubbleShape = phina.createClass({
+    // superClass: phina.display.Shape,
   phina.define('phina.display.TalkBubbleShape', {
     superClass: 'phina.display.Shape',
 
@@ -443,3 +447,5 @@ phina.namespace(function() {
   });
 
 });
+
+export {phina};

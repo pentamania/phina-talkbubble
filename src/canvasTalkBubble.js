@@ -1,3 +1,4 @@
+import * as phina from 'phina.js';
 
 phina.namespace(function() {
 
@@ -195,3 +196,5 @@ phina.namespace(function() {
   };
 
 });
+
+export {phina};
