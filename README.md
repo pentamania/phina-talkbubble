@@ -1,11 +1,10 @@
 # phina-talkbubble.js
+[![screenshot](https://user-images.githubusercontent.com/10734131/41821511-be94d13e-781c-11e8-938f-3ac25cba2151.gif)](https://pentamania.github.io/phina-fukidashi/sample/crowd.html)
 
-[![screenshot](./screenshot.gif)](https://pentamania.github.io/phina-fukidashi/sample/crowd.html)
+マンガのフキダシ、棘付きのフキダシっぽいものを描画するための[phina.js](http://phinajs.com/)用プラグインです。  
+*[phina.js](http://phinajs.com/) extention to render comic-like talk bubbles.*  
 
-マンガのフキダシ、棘付きのフキダシっぽいものを描画するためのphina.js用プラグインです。  
-phina.js extention to render comic-like talk bubbles.  
-
-**[サンプル](https://pentamania.github.io/phina-talkbubble/sample/crowd.html)**
+**[Example](https://pentamania.github.io/phina-talkbubble/sample/crowd.html)**
 
 ## Sample (In-browser)
 
@@ -71,10 +70,9 @@ phina.main(function() {
 ```
 
 ## Sample (ES modules)
-
 #### install
 ```
-npm i -S pentamania/phina-talkbubble
+npm i -S phina-talkbubble
 ```
 
 #### usage
@@ -111,8 +109,9 @@ phina.main(function() {
 
 #### phina.display.TalkBubbleShape
 フキダシ型のシェイプを描画します。
+*Render graphic of comic-like talk bubble.*  
 
-![よく分かる？図](./uitb-detail.png)
+![TalkBubble detail](https://user-images.githubusercontent.com/10734131/41806492-0b7b03de-76fa-11e8-8529-56368cdffe0d.png)
 
 Name | Type | Note
 --- | --- | ---
@@ -122,8 +121,6 @@ tipBasePositionRatio | Number (0 ~ 1.0) | 先端部中心が左右（もしく�
 tipBottomSize| Number | 先端部底面のサイズを指定
 tipDeviation | Number | 先端がフキダシ中央からどれくらいズレているかを指定
 tipProtrusion | Number | 先端がフキダシからどれだけ飛び出ているかを指定
-
-※仮のものなので「こういうオプション設定・名前のほうがいいんじゃない」とかあればお知らせ下さい…。
 
 #### phina.display.ThornedTalkBubbleShape
 トゲ付きフキダシのShapeクラスを描画します。トゲトゲのサイズや間隔を指定できます。  
@@ -138,15 +135,16 @@ verticalThornSize | Number | 上下のトゲトゲの大きさを指定
 
 #### phina.ui.TalkBubbleLabel & phina.ui.ThornedTalkBubbleLabel
 LabelAreaと組み合わせてフキダシ内にテキストを描画します。  
-どちらも上記の(Thorned)TalkBubbleShapeやLabelArea関連のオプションに加え、以下のオプションが設定可能。
+どちらも上記の(Thorned)TalkBubbleShapeやLabelArea関連のオプションに加え、以下のオプションが設定可能。  
+*Options for phina.ui.LabelArea are also available for these classes besides the following options*
 
 Name | Type | Note
 --- | --- | ---
 text | String | そのまま。改行文字（\n）を挟むことも可能
-bubbleFill  | String or Number(hex) | フキダシのfill style
-bubbleStroke | String or Number(hex) | フキダシのstroke style
-textFill | String or Number(hex) | テキストのfill style
-textStroke | String or Number(hex) | テキストのstroke style
+bubbleFill  | String or Number (hex) | フキダシのfill style
+bubbleStroke | String or Number (hex) | フキダシのstroke style
+textFill | String or Number (hex) | テキストのfill style
+textStroke | String or Number (hex) | テキストのstroke style
 fit | Boolean | テキスト領域に合わせてフキダシをリサイズするかどうか（初期値：true）
 
 ## Known bugs
