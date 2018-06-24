@@ -1,6 +1,6 @@
 {
   "name": "phina-talkbubble",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "talkbubble drawing plugin for phina.js",
   "main": "dist/phina-talkbubble.js",
   "scripts": {
