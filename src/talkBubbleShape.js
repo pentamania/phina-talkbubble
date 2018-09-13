@@ -297,7 +297,10 @@ phina.namespace(function() {
       this.text = options.text;
       this.textPadding = options.textPadding;
 
-      if (options.fit) this.adjustToLabelSize();
+      if (options.fit) {
+        this.fitWhenChanged = true;
+        this.adjustToLabelSize();
+      }
 
       // ラベル位置・サイズをフキダシと同期させる（もっと良い方法あるかも？）
       var dirtySync = this._dirtySync = true; // 初回実行用
@@ -338,6 +341,7 @@ phina.namespace(function() {
         set: function(v) {
           this.label.text = v;
           this._lines = (this.label.text + '').split('\n');
+          if (this.fitWhenChanged) this.adjustToLabelSize();
         }
       },
     },
@@ -385,7 +389,10 @@ phina.namespace(function() {
       var la = this.label = phina.ui.LabelArea(labelOptions).addChildTo(this);
       this.textPadding = options.textPadding;
 
-      if (options.fit) this.adjustToLabelSize();
+      if (options.fit) {
+        this.fitWhenChanged = true;
+        this.adjustToLabelSize();
+      }
 
       // ラベル位置・サイズをフキダシと同期させる
       var _dirtySync = true; //初回実行用
@@ -440,6 +447,7 @@ phina.namespace(function() {
         },
         set: function(v) {
           this.label.text = v;
+          if (this.fitWhenChanged) this.adjustToLabelSize();
         }
       },
     },
