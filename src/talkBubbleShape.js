@@ -267,8 +267,8 @@ phina.namespace(function() {
     init: function(options) {
       options = ({}).$safe(options, {
         text: "Hello World!",
-        bubbleFill: (options.fill || 'white'),
-        bubbleStroke: (options.stroke || 'black'),
+        bubbleFill: 'white',
+        bubbleStroke: 'black',
         textFill: 'black',
         textStroke: 'transparent',
         fontSize: 24,
@@ -361,8 +361,8 @@ phina.namespace(function() {
         text: "Hello World!",
         width: 230,
         height: 180,
-        bubbleFill: (options.fill || 'white'),
-        bubbleStroke: (options.stroke || 'black'),
+        bubbleFill: 'white',
+        bubbleStroke: 'black',
         textFill: 'black',
         textStroke: 'transparent',
         fontSize: 24,
